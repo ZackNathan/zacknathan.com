@@ -1,16 +1,16 @@
-/*html {
+html {
     /* Helps with scrolling */
-    /*overflow: hidden;
+    overflow: hidden;
     height: 100%;
 }
 
 body {
     /* Padding on the edges and help with scrolling */
-    /*height: 100%;
+    height: 100%;
     overflow: auto;
     padding-bottom: 40px;
 	padding-left: 40px;
 	padding-right: 40px;
     background-repeat:no-repeat;
     background-size: 100% 1080px;
-}*/
+}
