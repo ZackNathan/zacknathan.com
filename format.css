@@ -1,11 +1,10 @@
+/*
 html {
-    /* Helps with scrolling */
     overflow: hidden;
     height: 100%;
 }
 
 body {
-    /* Padding on the edges and help with scrolling */
     height: 100%;
     overflow: auto;
     padding-bottom: 40px;
@@ -14,3 +13,4 @@ body {
     background-repeat:no-repeat;
     background-size: 100% 1080px;
 }
+*/
