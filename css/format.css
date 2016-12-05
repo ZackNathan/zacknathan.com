@@ -19,4 +19,9 @@ body {
     color: white;
     border: none;
     background-color: #260d49;
+    border-radius: 0px;
+}
+
+.whitetext {
+    color: white;
 }
