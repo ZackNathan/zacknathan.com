@@ -15,7 +15,7 @@ body {
 	padding-right: 20px;
 }
 
-.bar {
+#bar {
     color: white;
     border: none;
     background-color: #260d49;
