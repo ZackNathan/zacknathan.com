@@ -15,7 +15,7 @@ body {
 	padding-right: 20px;
 }
 
-.navbar .navbar-default .navbar-nav {
+#bar {
     color: white;
     border: none;
     background-color: #260d49;
