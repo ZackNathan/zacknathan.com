@@ -16,8 +16,12 @@ body {
 }
 
 #bar {
-    color: white !important;
+    color: white;
     border: none;
     background-color: #260d49;
     border-radius: 0px;
+}
+
+#bar a {
+    color: white;
 }
