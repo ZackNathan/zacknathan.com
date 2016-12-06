@@ -16,15 +16,9 @@ body {
     border: none;
     background-color: #260d49;
     border-radius: 0px;
+    margin-bottom: 0px;
 }
 
 #bar a {
     color: white;
-}
-
-.content-panel {
-    border-radius: 10px;
-    border: 2px solid #260d49;
-    padding: 10px;
-    padding-top: 0px;
 }
