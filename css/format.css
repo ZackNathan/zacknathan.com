@@ -8,6 +8,7 @@ body {
     overflow: auto;
     background-repeat:no-repeat;
     background-size: 100% 1080px;
+    background-color: #f0e9fb;
 }
 
 #bar {
