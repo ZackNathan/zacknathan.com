@@ -22,3 +22,14 @@ body {
 #bar a {
     color: white;
 }
+
+h1 {
+    font-size: 30pt;
+    font-variant: small-caps;
+}
+
+p {
+    font-size: 12pt;
+    font-family: "Droid Sans";
+    line-height: 26px;
+}
