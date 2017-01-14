@@ -8,15 +8,22 @@ body {
     overflow: auto;
     background-repeat:no-repeat;
     background-size: 100% 1080px;
-    background-color: #f0e9fb;
+    background-color: #b3ccff;
 }
 
 #content {
-	width: 50%;
+	width: 90%;
 	align: center;
 	margin: 0 auto;
 	margin-top: 20px;
+	margin-bottom: 20px;
 	background-color: #ffffff;
+	border-radius: 20px;
+	padding: 20px;
+	padding-left: 50px;
+	padding-right: 50px;
+	column-count: 3;
+	column-gap: 50px;
 }
 
 h1 {
