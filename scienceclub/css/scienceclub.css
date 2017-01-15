@@ -11,6 +11,11 @@ body {
     background-color: #ffff80;
 }
 
+@font-face {
+    font-family: "Phosphate";
+    src: url("phosphate.ttf") format('truetype');
+}
+
 #content {
 	width: 90%;
 	align: center;
@@ -24,13 +29,8 @@ body {
 	color: #ffff80;
 }
 
-h1 {
+h2 {
+	font-family: "Phosphate";
     font-size: 30pt;
     font-variant: small-caps;
-}
-
-p {
-    font-size: 12pt;
-    font-family: "Droid Sans";
-    line-height: 26px;
 }
