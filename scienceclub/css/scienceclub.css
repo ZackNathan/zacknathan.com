@@ -8,7 +8,7 @@ body {
     overflow: auto;
     background-repeat:no-repeat;
     background-size: 100% 1080px;
-    background-color: #ffff80;
+    background-color: #310066;
 }
 
 @font-face {
@@ -20,17 +20,17 @@ body {
 	width: 90%;
 	align: center;
 	margin: 0 auto;
-	background-color: #000000;
+	background-color: #ffffff;
 	padding: 20px;
 	padding-left: 50px;
 	padding-right: 50px;
 	column-count: 3;
 	column-gap: 50px;
-	color: #ffff80;
+	color: #310066;
 }
 
 h2 {
-	font-family: "Phosphate";
-    font-size: 30pt;
+	font-family: "Avenir";
+    font-size: 25pt;
     font-variant: small-caps;
 }
