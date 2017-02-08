@@ -150,7 +150,7 @@ function draw() {
     //Gridlines
     ctx.strokeStyle = "rgba(120, 120, 120, 0.3)";
     ctx.fillStyle = "rgba(0, 0, 0, 0)";
-    for (var i = 0; i < WIDTH/40; i++) {
+    for (var i = 0; i < Math.max(WIDTH/40, HEIGHT/40); i++) {
         rect(i*40, 0, 20, HEIGHT);
         rect(0, i*40, WIDTH, 20);
     }
