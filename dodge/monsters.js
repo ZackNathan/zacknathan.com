@@ -79,6 +79,8 @@ Monster.prototype.drawMonster = function() {
         ctx.fillStyle = "rgb(230, 40, 40)";
     } else if (this.reverser) {
         ctx.fillStyle = "rgb(230, 40, 230)";
+	} else if (this.coin) {
+        ctx.fillStyle = "rgb(230, 230, 40)";
     } else {
         ctx.fillStyle = "rgb(30, 0, 80)";
     }

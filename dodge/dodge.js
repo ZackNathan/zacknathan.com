@@ -2,7 +2,6 @@ var canvas;
 var ctx;
 var framerate = 60;
 var speed = 5;
-var reversed = false;
 var dx = 0;
 var dy = 0;
 var count = 1;
@@ -24,8 +23,8 @@ var diagonalSlow = false;
 // Important starting function
 function init() {
     canvas = document.getElementById("game");
-    canvas.width = window.innerWidth-20;
-    canvas.height = window.innerHeight-20;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
     ctx = game.getContext("2d");
 
     WIDTH = canvas.width;
@@ -135,7 +134,6 @@ function restart() {
     monsters = [];
     count = 1;
     speed = 5;
-    reversed = false;
     var upPressed = false;
     var downPressed = false;
     var leftPressed = false;
@@ -160,7 +158,6 @@ function draw() {
     circle(x+8, y+8, radius)
     ctx.fillStyle = "rgb(80, 0, 30)";
     circle(x, y, radius);
-    ctx.drawImage(playerImg, x-radius+2, y-radius+2, radius*2-4, radius*2-4);
 
     for (var i = 0; i < monsters.length; i++) {
         monsters[i].drawShadow();
@@ -172,12 +169,19 @@ function draw() {
                 if (monsters[i].coin) {
                     count += 100;
                 } else if (monsters[i].speedup) {
-                    speed += 1;
+					if (speed <= -2) {
+						speed -= 1;
+					} else if (speed >= 2) {
+						speed += 1;
+					}
                 } else if (monsters[i].speeddown) {
-                    speed -= 1;
+					if (speed <= -2) {
+						speed += 1;
+					} else if (speed >= 2) {
+						speed -= 1;
+					}
                 } else if (monsters[i].reverser) {
                     speed *= -1;
-                    reversed = !reversed;
                 }
                 monsters[i].dead = true;
             } else {
@@ -202,9 +206,9 @@ function frame() {
     move();
     draw();
     count++;
-    if (reversed && count % 2 == 0) {
-        count++;
-    }
+	if (speed < 0 && frame % 2 == 0) {
+		count++;
+	}
 }
 
 // Main part of program
