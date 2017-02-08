@@ -2,25 +2,3 @@ html {
     overflow: hidden;
     height: 100%;
 }
-
-body {
-    height: 100%;
-    overflow: auto;
-    background-repeat:no-repeat;
-    background-size: 100% 1080px;
-    background-color: #310066;
-}
-
-
-#content {
-	width: 90%;
-	align: center;
-	margin: 0 auto;
-	background-color: #ffffff;
-	padding: 20px;
-	padding-left: 50px;
-	padding-right: 50px;
-	column-count: 3;
-	column-gap: 50px;
-	color: #310066;
-}
