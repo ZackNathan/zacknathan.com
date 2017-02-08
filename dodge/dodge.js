@@ -145,11 +145,7 @@ function restart() {
 
 function draw() {
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
-    if (theme == "StarWars") {
-        ctx.fillStyle = "rgb(0, 0, 0)";
-    } else {
-        ctx.fillStyle = "rgb(240, 240, 240)";
-    }
+    ctx.fillStyle = "rgb(240, 240, 240)";
 
     //Gridlines
     ctx.strokeStyle = "rgba(120, 120, 120, 0.3)";
