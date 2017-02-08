@@ -5,6 +5,7 @@ var speed = 5;
 var dx = 0;
 var dy = 0;
 var count = 1;
+var coins = 0;
 var WIDTH;
 var HEIGHT;
 var x;
@@ -134,6 +135,7 @@ function restart() {
     monsters = [];
     count = 1;
     speed = 5;
+    coins = 0;
     var upPressed = false;
     var downPressed = false;
     var leftPressed = false;
@@ -168,6 +170,7 @@ function draw() {
             if (monsters[i].powerup) {
                 if (monsters[i].coin) {
                     count += 100;
+                    coins += 1;
                 } else if (monsters[i].speedup) {
 					if (speed <= -2) {
 						speed -= 1;
@@ -191,9 +194,15 @@ function draw() {
         monsters[i].drawMonster();
     }
 
+    ctx.textAlign = "center";
     ctx.fillStyle = "rgb(30, 0, 80)";
     ctx.font = "42px Arial Black";
-    ctx.fillText(count, WIDTH/2-(15*count.toString().length), 40);
+    ctx.fillText(count, WIDTH/2, 40);
+    ctx.textAlign = "left";
+    ctx.font = "24px Arial Black";
+    ctx.fillText("Speed: " + speed.toString(), 40, 40);
+    ctx.textAlign = "right";
+    ctx.fillText("Coins: " + coins.toString(), WIDTH-40, 40);
     if (gameover) {
         gameoverScreen();
     }
