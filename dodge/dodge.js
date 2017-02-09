@@ -32,6 +32,12 @@ var b2 = [randint(minColour+1, maxColour-1), [-1, 1][randint(0, 1)]];
 var foregroundColour = "rgb("+(255-(r1[0]+r2[0])/2)+", "+(255-(g1[0]+g2[0])/2)+", "+(255-(b1[0]+b2[0])/2)+")";
 var background;
 var rotatePeriod = 100;
+var music = new Audio('audio/music.mp3');
+var coinSound = new Audio('audio/gold.mp3');
+var speedUpSound = new Audio('audio/speedup.mp3');
+var speedDownSound = new Audio('audio/speeddown.mp3');
+var reverseSound = new Audio('audio/reverse.mp3');
+var gameOverSound = new Audio('audio/gameover.mp3');
 
 // Important starting function
 function init() {
@@ -48,6 +54,11 @@ function init() {
     background = ctx.createLinearGradient(0, 0, WIDTH, HEIGHT);
 
     interval = setInterval(frame, 1000/framerate);
+    gameOverSound.volume = 0.6;
+    reverseSound.volume = 0.7;
+    speedUpSound.volume = 0.8;
+    coinSound.volume = 0.8;
+    music.play();
 }
 
 function randint(min, max) {
@@ -139,6 +150,10 @@ function gameoverScreen() {
     ctx.font = "96px Arial Black";
     ctx.fillStyle = "rgb(240, 240, 240)";
     ctx.fillText("Game Over " + "(" + score.toString() + ")", WIDTH/2, HEIGHT/2-20);
+
+    music.pause();
+    gameOverSound.currentTime=0;
+    gameOverSound.play();
 }
 
 function restart() {
@@ -163,6 +178,10 @@ function restart() {
     var leftPressed = false;
     var rightPressed = false;
     interval = setInterval(frame, 1000/framerate);
+
+    gameOverSound.pause();
+    music.currentTime=0;
+    music.play();
 }
 
 function changeColour(c) {
@@ -203,20 +222,28 @@ function draw() {
                 if (monsters[i].coin) {
                     score += 100;
                     coins += 1;
+                    coinSound.currentTime = 0;
+                    coinSound.play();
                 } else if (monsters[i].speedup) {
 					if (speed <= -2) {
 						speed -= 1;
 					} else if (speed >= 2) {
 						speed += 1;
 					}
+                    speedUpSound.currentTime = 0;
+                    speedUpSound.play();
                 } else if (monsters[i].speeddown) {
 					if (speed <= -2) {
 						speed += 1;
 					} else if (speed >= 2) {
 						speed -= 1;
 					}
+                    speedDownSound.currentTime = 0;
+                    speedDownSound.play();
                 } else if (monsters[i].reverser) {
                     speed *= -1;
+                    reverseSound.currentTime = 0;
+                    reverseSound.play();
                 }
                 monsters[i].dead = true;
             } else {
