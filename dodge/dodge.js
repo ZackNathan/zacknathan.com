@@ -150,7 +150,7 @@ function gameoverScreen() {
     ctx.fillText("Press the space bar to play again", WIDTH/2, HEIGHT/2+40);
     ctx.font = "96px Arial Black";
     ctx.fillStyle = "rgb(240, 240, 240)";
-    ctx.fillText("Game Over " + "(" + score.toString() + ")", WIDTH/2, HEIGHT/2-20);
+    ctx.fillText("Game Over " + "(" + Math.trunc(score).toString() + ")", WIDTH/2, HEIGHT/2-20);
 
     music.pause();
     gameOverSound.currentTime=0;
@@ -260,7 +260,7 @@ function draw() {
     ctx.textAlign = "center";
     ctx.fillStyle = foregroundColour;
     ctx.font = "42px Arial Black";
-    ctx.fillText(score, WIDTH/2, 40);
+    ctx.fillText(Math.trunc(score), WIDTH/2, 40);
     ctx.textAlign = "left";
     ctx.font = "24px Arial Black";
     ctx.fillText("Speed: " + speed.toString(), 40, 40);
@@ -299,8 +299,8 @@ function frame() {
     draw();
     count++;
     score++;
-	if (speed < 0 && frame % 2 == 0) {
-		score++;
+	if (speed < 0) {
+		score += 0.5;
 	}
 }
 
