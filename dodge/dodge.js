@@ -38,6 +38,7 @@ var speedUpSound = new Audio('audio/speedup.mp3');
 var speedDownSound = new Audio('audio/speeddown.mp3');
 var reverseSound = new Audio('audio/reverse.mp3');
 var gameOverSound = new Audio('audio/gameover.mp3');
+var muted = false;
 
 // Important starting function
 function init() {
@@ -265,6 +266,26 @@ function draw() {
     if (gameover) {
         gameoverScreen();
     }
+}
+
+function mute() {
+    gameOverSound.volume = 0;
+    reverseSound.volume = 0;
+    speedUpSound.volume = 0;
+    coinSound.volume = 0;
+    speedDownSound.volume = 0;
+    music.volume = 0;
+    muted = true;
+}
+
+function unmute() {
+    gameOverSound.volume = 0.6;
+    reverseSound.volume = 0.7;
+    speedUpSound.volume = 0.8;
+    coinSound.volume = 0.8;
+    speedDownSound.volume = 1.0;
+    music.volume = 1.0;
+    muted = false;
 }
 
 function frame() {

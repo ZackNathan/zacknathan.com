@@ -17,7 +17,13 @@ function keyDown(evt){
                 restart();
             }
             break;
-        }
+        case 77: /* M */
+            if (muted) {
+                unmute();
+            } else {
+                mute();
+            }
+    }
 }
 
 function keyUp(evt) {
