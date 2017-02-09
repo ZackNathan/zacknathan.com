@@ -5,6 +5,7 @@ var speed = 5;
 var dx = 0;
 var dy = 0;
 var count = 1;
+var score = 1;
 var coins = 0;
 var WIDTH;
 var HEIGHT;
@@ -20,6 +21,17 @@ var gameover = false;
 var interval;
 var deathmonster = [];
 var diagonalSlow = false;
+var minColour = 100;
+var maxColour = 250;
+var r1 = [randint(minColour+1, maxColour-1), [-1, 1][randint(0, 1)]];
+var g1 = [randint(minColour+1, maxColour-1), [-1, 1][randint(0, 1)]];
+var b1 = [randint(minColour+1, maxColour-1), [-1, 1][randint(0, 1)]];
+var r2 = [randint(minColour+1, maxColour-1), [-1, 1][randint(0, 1)]];
+var g2 = [randint(minColour+1, maxColour-1), [-1, 1][randint(0, 1)]];
+var b2 = [randint(minColour+1, maxColour-1), [-1, 1][randint(0, 1)]];
+var foregroundColour = "rgb("+(255-(r1[0]+r2[0])/2)+", "+(255-(g1[0]+g2[0])/2)+", "+(255-(b1[0]+b2[0])/2)+")";
+var background;
+var rotatePeriod = 100;
 
 // Important starting function
 function init() {
@@ -32,6 +44,8 @@ function init() {
     HEIGHT = canvas.height;
     x = WIDTH/2;
     y = HEIGHT/2;
+
+    background = ctx.createLinearGradient(0, 0, WIDTH, HEIGHT);
 
     interval = setInterval(frame, 1000/framerate);
 }
@@ -51,7 +65,6 @@ function rect(x, y, w, h) {
     ctx.rect(x, y, w, h);
     ctx.closePath();
     ctx.fill();
-    ctx.stroke();
 }
 
 function move() {
@@ -125,7 +138,7 @@ function gameoverScreen() {
     ctx.fillText("Press the space bar to play again", WIDTH/2, HEIGHT/2+40);
     ctx.font = "96px Arial Black";
     ctx.fillStyle = "rgb(240, 240, 240)";
-    ctx.fillText("Game Over " + "(" + count.toString() + ")", WIDTH/2, HEIGHT/2-20);
+    ctx.fillText("Game Over " + "(" + score.toString() + ")", WIDTH/2, HEIGHT/2-20);
 }
 
 function restart() {
@@ -134,8 +147,17 @@ function restart() {
     y = HEIGHT/2;
     monsters = [];
     count = 1;
+    score = 1;
     speed = 5;
     coins = 0;
+
+    r1 = [randint(minColour+1, maxColour-1), [-1, 1][randint(0, 1)]];
+    g1 = [randint(minColour+1, maxColour-1), [-1, 1][randint(0, 1)]];
+    b1 = [randint(minColour+1, maxColour-1), [-1, 1][randint(0, 1)]];
+    r2 = [randint(minColour+1, maxColour-1), [-1, 1][randint(0, 1)]];
+    g2 = [randint(minColour+1, maxColour-1), [-1, 1][randint(0, 1)]];
+    b2 = [randint(minColour+1, maxColour-1), [-1, 1][randint(0, 1)]];
+
     var upPressed = false;
     var downPressed = false;
     var leftPressed = false;
@@ -143,28 +165,43 @@ function restart() {
     interval = setInterval(frame, 1000/framerate);
 }
 
+function changeColour(c) {
+    if (c[0] >= maxColour) {c[1] = -1;}
+    else if (c[0] <= minColour) {c[1] = 1;}
+    c[0] += c[1];
+}
+
 function draw() {
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
-    ctx.fillStyle = "rgb(240, 240, 240)";
 
-    //Gridlines
-    ctx.strokeStyle = "rgba(120, 120, 120, 0.3)";
-    ctx.fillStyle = "rgba(0, 0, 0, 0)";
-    for (var i = 0; i < Math.max(WIDTH/40, HEIGHT/40); i++) {
-        rect(i*40, 0, 20, HEIGHT);
-        rect(0, i*40, WIDTH, 20);
-    }
+    changeColour(r1)
+    changeColour(r2)
+    changeColour(g1)
+    changeColour(g2)
+    changeColour(b1)
+    changeColour(b2)
 
+    background = ctx.createLinearGradient(
+                    Math.max(Math.min( WIDTH, WIDTH - WIDTH*((Math.abs((3*rotatePeriod/8.0-(count%rotatePeriod)))-(rotatePeriod/8.0))/(rotatePeriod/4.0)) ), 0),
+                 Math.max(Math.min( HEIGHT, HEIGHT - HEIGHT*((Math.abs((5*rotatePeriod/8.0-(count%rotatePeriod)))-(rotatePeriod/8.0))/(rotatePeriod/4.0)) ), 0),
+            WIDTH - Math.max(Math.min( WIDTH, WIDTH - WIDTH*((Math.abs((3*rotatePeriod/8.0-(count%rotatePeriod)))-(rotatePeriod/8.0))/(rotatePeriod/4.0)) ), 0),
+        HEIGHT - Math.max(Math.min( HEIGHT, HEIGHT - HEIGHT*((Math.abs((5*rotatePeriod/8.0-(count%rotatePeriod)))-(rotatePeriod/8.0))/(rotatePeriod/4.0)) ), 0));
+
+    background.addColorStop(0, "rgb("+r1[0]+", "+g1[0]+", "+b1[0]+")");
+    background.addColorStop(1, "rgb("+r2[0]+", "+g2[0]+", "+b2[0]+")");
+
+    ctx.fillStyle = background;
     rect(0 ,0, WIDTH, HEIGHT);
-    ctx.fillStyle = "rgb(80, 0, 30)";
+
+    foregroundColour = "rgb("+(Math.trunc(255-(r1[0]+r2[0])/2)-100)+", "+(Math.trunc(255-(g1[0]+g2[0])/2)-100)+", "+(Math.trunc(255-(b1[0]+b2[0])/2)-100)+")";
+    ctx.fillStyle = foregroundColour;
     circle(x, y, radius);
 
-    ctx.fillStyle = "rgb(30, 0, 80)";
     for (var i = 0; i < monsters.length; i++) {
         if (monsters[i].isCollide(x, y, 10) == true) {
             if (monsters[i].powerup) {
                 if (monsters[i].coin) {
-                    count += 100;
+                    score += 100;
                     coins += 1;
                 } else if (monsters[i].speedup) {
 					if (speed <= -2) {
@@ -190,9 +227,9 @@ function draw() {
     }
 
     ctx.textAlign = "center";
-    ctx.fillStyle = "rgb(30, 0, 80)";
+    ctx.fillStyle = foregroundColour;
     ctx.font = "42px Arial Black";
-    ctx.fillText(count, WIDTH/2, 40);
+    ctx.fillText(score, WIDTH/2, 40);
     ctx.textAlign = "left";
     ctx.font = "24px Arial Black";
     ctx.fillText("Speed: " + speed.toString(), 40, 40);
@@ -210,8 +247,9 @@ function frame() {
     move();
     draw();
     count++;
+    score++;
 	if (speed < 0 && frame % 2 == 0) {
-		count++;
+		score++;
 	}
 }
 

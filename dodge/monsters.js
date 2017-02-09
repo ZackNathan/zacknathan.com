@@ -73,17 +73,21 @@ Monster.prototype.moveMonster = function() {
 }
 
 Monster.prototype.drawMonster = function() {
+    ctx.fillStyle = foregroundColour;
     if (this.speedup) {
+        this.drawOutline();
         ctx.fillStyle = "rgb(40, 230, 40)";
     } else if (this.speeddown) {
+        this.drawOutline();
         ctx.fillStyle = "rgb(230, 40, 40)";
     } else if (this.reverser) {
+        this.drawOutline();
         ctx.fillStyle = "rgb(230, 40, 230)";
 	} else if (this.coin) {
+        this.drawOutline();
         ctx.fillStyle = "rgb(230, 230, 40)";
-    } else {
-        ctx.fillStyle = "rgb(30, 0, 80)";
     }
+
     if (this.line) {
         if (this.horizontal) {
             rect(this.x-this.radius, this.y-7, this.radius*2, 14);
@@ -95,17 +99,8 @@ Monster.prototype.drawMonster = function() {
     }
 }
 
-Monster.prototype.drawShadow = function() {
-    ctx.fillStyle = "rgb(120, 120, 120)";
-    if (this.line) {
-        if (this.horizontal) {
-            rect(this.x-this.radius+8, this.y-7+8, this.radius*2, 14);
-        } else {
-            rect(this.x-7+8, this.y-this.radius+8, 14, this.radius*2);
-        }
-    } else {
-        circle(this.x+8, this.y+8, this.radius);
-    }
+Monster.prototype.drawOutline = function() {
+    circle(this.x, this.y, this.radius+4);
 }
 
 Monster.prototype.isCollide = function(playerx, playery, playerRadius) {
