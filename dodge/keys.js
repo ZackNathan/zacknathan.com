@@ -3,13 +3,25 @@ function keyDown(evt){
         case 38:  /* Up arrow was pressed */
             upPressed = true;
             break;
+        case 87:  /* W */
+            upPressed = true;
+            break;
         case 40:  /* Down arrow was pressed */
+            downPressed = true;
+            break;
+        case 83:  /* S */
             downPressed = true;
             break;
         case 37:  /* Left arrow was pressed */
             leftPressed = true;
             break;
+        case 65:  /* A */
+            leftPressed = true;
+            break;
         case 39:  /* Right arrow was pressed */
+            rightPressed = true;
+            break;
+        case 68:  /* D */
             rightPressed = true;
             break;
         case 32: /* Space Bar */
@@ -31,13 +43,25 @@ function keyUp(evt) {
         case 38:  /* Up arrow was pressed */
             upPressed = false;
             break;
+        case 87:  /* W */
+            upPressed = false;
+            break;
         case 40:  /* Down arrow was pressed */
             downPressed = false;
             break;
+        case 83:  /* S */
+            downPressed = false;
+            break
         case 37:  /* Left arrow was pressed */
             leftPressed = false;
             break;
+        case 65:  /* A */
+            leftPressed = false;
+            break;
         case 39:  /* Right arrow was pressed */
+            rightPressed = false;
+            break;
+        case 68:  /* D */
             rightPressed = false;
             break;
         }

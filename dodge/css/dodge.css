@@ -2,3 +2,32 @@ html {
     overflow: hidden;
     height: 100%;
 }
+
+body {
+    height: 100%;
+    overflow: auto;
+    background-repeat:no-repeat;
+    background-size: 100% 1080px;
+    background-color: #310066;
+}
+
+h1 {
+    font-size: 64pt;
+    font-variant: small-caps;
+}
+
+h2 {
+    font-size: 30pt;
+    font-variant: small-caps;
+}
+
+h3 {
+    font-size: 18pt;
+    font-variant: small-caps;
+}
+
+p {
+    font-size: 12pt;
+    font-family: "Droid Sans";
+    line-height: 26px;
+}
