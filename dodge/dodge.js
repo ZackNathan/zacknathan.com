@@ -156,14 +156,9 @@ function draw() {
     }
 
     rect(0 ,0, WIDTH, HEIGHT);
-    ctx.fillStyle = "rgb(120, 120, 120)";
-    circle(x+8, y+8, radius)
     ctx.fillStyle = "rgb(80, 0, 30)";
     circle(x, y, radius);
 
-    for (var i = 0; i < monsters.length; i++) {
-        monsters[i].drawShadow();
-    }
     ctx.fillStyle = "rgb(30, 0, 80)";
     for (var i = 0; i < monsters.length; i++) {
         if (monsters[i].isCollide(x, y, 10) == true) {
