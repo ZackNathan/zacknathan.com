@@ -216,6 +216,9 @@ function draw() {
     foregroundColour = "rgb("+(Math.trunc(255-(r1[0]+r2[0])/2)-100)+", "+(Math.trunc(255-(g1[0]+g2[0])/2)-100)+", "+(Math.trunc(255-(b1[0]+b2[0])/2)-100)+")";
     ctx.fillStyle = foregroundColour;
     circle(x, y, radius);
+    ctx.fillStyle = "white";
+    circle(x, y, radius-4);
+    ctx.fillStyle = foregroundColour;
 
     for (var i = 0; i < monsters.length; i++) {
         if (monsters[i].isCollide(x, y, 10) == true) {
