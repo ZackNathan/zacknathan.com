@@ -55,7 +55,7 @@ function init() {
     background = ctx.createLinearGradient(0, 0, WIDTH, HEIGHT);
 
     interval = setInterval(frame, 1000/framerate);
-    gameOverSound.volume = 0.6;
+    gameOverSound.volume = 0.4;
     reverseSound.volume = 0.7;
     speedUpSound.volume = 0.8;
     coinSound.volume = 0.6;
@@ -282,7 +282,7 @@ function mute() {
 }
 
 function unmute() {
-    gameOverSound.volume = 0.6;
+    gameOverSound.volume = 0.4;
     reverseSound.volume = 0.7;
     speedUpSound.volume = 0.8;
     coinSound.volume = 0.6;
