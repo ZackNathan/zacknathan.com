@@ -58,7 +58,7 @@ function init() {
     gameOverSound.volume = 0.6;
     reverseSound.volume = 0.7;
     speedUpSound.volume = 0.8;
-    coinSound.volume = 0.8;
+    coinSound.volume = 0.6;
     music.play();
 }
 
@@ -285,7 +285,7 @@ function unmute() {
     gameOverSound.volume = 0.6;
     reverseSound.volume = 0.7;
     speedUpSound.volume = 0.8;
-    coinSound.volume = 0.8;
+    coinSound.volume = 0.6;
     speedDownSound.volume = 1.0;
     music.volume = 1.0;
     muted = false;
