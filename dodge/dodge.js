@@ -178,7 +178,7 @@ function gameoverScreen() {
         localStorage.setItem("highscore", highscore);
     }
 
-    gamesPlayed = parseInt(gamesPlayed)++;
+    gamesPlayed = parseInt(gamesPlayed) + 1;
     ctx.fillText("You have played "+gamesPlayed+" games", WIDTH/2, HEIGHT/2+100);
     localStorage.setItem("gamesPlayed", 105);
 
