@@ -39,6 +39,7 @@ var speedDownSound = new Audio('audio/speeddown.mp3');
 var reverseSound = new Audio('audio/reverse.mp3');
 var gameOverSound = new Audio('audio/gameover.mp3');
 var muted = false;
+var highscore;
 
 // Important starting function
 function init() {
@@ -53,6 +54,12 @@ function init() {
     y = HEIGHT/2;
 
     background = ctx.createLinearGradient(0, 0, WIDTH, HEIGHT);
+
+    if (getCookie(highscore) != false) {
+        highscore = parseInt(getCookie(highscore));
+    } else {
+        document.cookie = "highscore=1";
+    }
 
     interval = setInterval(frame, 1000/framerate);
     gameOverSound.volume = 0.4;
@@ -151,6 +158,18 @@ function gameoverScreen() {
     ctx.font = "96px Arial Black";
     ctx.fillStyle = "rgb(240, 240, 240)";
     ctx.fillText("Game Over " + "(" + Math.trunc(score).toString() + ")", WIDTH/2, HEIGHT/2-20);
+
+    if (score <= highscore) {
+        ctx.font = "36px Arial Black";
+        ctx.fillStyle = "rgb(240, 240, 240)";
+        ctx.fillText("Your high score is " + highscore.toString(), WIDTH/2, HEIGHT/2+80);
+    } else {
+        ctx.font = "36px Arial Black";
+        ctx.fillStyle = "rgb(240, 240, 240)";
+        ctx.fillText("New high score!", WIDTH/2, HEIGHT/2+80);
+        highscore = score
+        document.cookie = "highscore="+highscore.toString();
+    }
 
     music.pause();
     gameOverSound.currentTime=0;
@@ -302,6 +321,22 @@ function frame() {
 	if (speed < 0) {
 		score += 0.5;
 	}
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return false;
 }
 
 // Main part of program
