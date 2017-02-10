@@ -54,7 +54,7 @@ function init() {
     HEIGHT = canvas.height;
     x = WIDTH/2;
     y = HEIGHT/2;
-    monsterPeriod = Math.trunc(8/(WIDTH*HEIGHT/1152000));
+    monsterPeriod = Math.round(8.0/(WIDTH*HEIGHT/1152000.0));
 
     background = ctx.createLinearGradient(0, 0, WIDTH, HEIGHT);
 
