@@ -55,11 +55,11 @@ function init() {
 
     background = ctx.createLinearGradient(0, 0, WIDTH, HEIGHT);
 
-    if (getCookie(highscore) != false) {
-        highscore = parseInt(getCookie(highscore));
+    if (localStorage.getItem("highscore")) {
+        highscore = localStorage.getItem("highscore");
     } else {
-        document.cookie = "highscore=1;expires=Fri, 1 Jan 2100 12:00:00 UTC; path=/";
-        highscore = parseInt(getCookie(highscore));
+        localStorage.setItem("highscore", 1);
+        highscore = 1
     }
 
     interval = setInterval(frame, 1000/framerate);
@@ -171,7 +171,7 @@ function gameoverScreen() {
         ctx.fillStyle = "rgb(240, 240, 240)";
         ctx.fillText("New high score!", WIDTH/2, HEIGHT/2+50);
         highscore = score
-        document.cookie = "highscore="+highscore.toString()+";expires=Fri, 1 Jan 2100 12:00:00 UTC; path=/";
+        localStorage.setItem("highscore", highscore);
     }
 
     music.pause();
@@ -324,22 +324,6 @@ function frame() {
 	if (speed < 0) {
 		score += 0.5;
 	}
-}
-
-function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return false;
 }
 
 // Main part of program
