@@ -177,10 +177,10 @@ function gameoverScreen() {
         highscore = score
         localStorage.setItem("highscore", highscore);
     }
-    
-    gamesPlayed += 1;
+
+    gamesPlayed = parseInt(gamesPlayed)++;
     ctx.fillText("You have played "+gamesPlayed+" games", WIDTH/2, HEIGHT/2+100);
-    localStorage.setItem("gamesPlayed", gamesPlayed);
+    localStorage.setItem("gamesPlayed", 105);
 
     music.pause();
     gameOverSound.currentTime=0;
