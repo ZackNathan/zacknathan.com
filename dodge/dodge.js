@@ -180,7 +180,7 @@ function gameoverScreen() {
 
     gamesPlayed = parseInt(gamesPlayed) + 1;
     ctx.fillText("You have played "+gamesPlayed+" games", WIDTH/2, HEIGHT/2+100);
-    localStorage.setItem("gamesPlayed", 105);
+    localStorage.setItem("gamesPlayed", gamesPlayed);
 
     music.pause();
     gameOverSound.currentTime=0;
