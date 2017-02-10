@@ -41,6 +41,7 @@ var gameOverSound = new Audio('audio/gameover.mp3');
 var muted = false;
 var highscore;
 var gamesPlayed;
+var monsterPeriod = 8;
 
 // Important starting function
 function init() {
@@ -53,6 +54,7 @@ function init() {
     HEIGHT = canvas.height;
     x = WIDTH/2;
     y = HEIGHT/2;
+    monsterPeriod = Math.trunc(8/(WIDTH*HEIGHT/1152000));
 
     background = ctx.createLinearGradient(0, 0, WIDTH, HEIGHT);
 
@@ -322,7 +324,7 @@ function unmute() {
 }
 
 function frame() {
-    if (count % 8 == 0) {
+    if (count % monsterPeriod == 0) {
         monsters.push(new Monster());
     }
     move();
