@@ -40,6 +40,7 @@ var reverseSound = new Audio('audio/reverse.mp3');
 var gameOverSound = new Audio('audio/gameover.mp3');
 var muted = false;
 var highscore;
+var gamesPlayed;
 
 // Important starting function
 function init() {
@@ -59,7 +60,14 @@ function init() {
         highscore = localStorage.getItem("highscore");
     } else {
         localStorage.setItem("highscore", 1);
-        highscore = 1
+        highscore = 1;
+    }
+
+    if (localStorage.getItem("gamesPlayed")) {
+        gamesPlayed = localStorage.getItem("gamesPlayed");
+    } else {
+        localStorage.setItem("gamesPlayed", 0);
+        gamesPlayed = 0;
     }
 
     interval = setInterval(frame, 1000/framerate);
@@ -155,24 +163,24 @@ function gameoverScreen() {
     score = Math.trunc(score);
 
     ctx.textAlign = "center";
-    ctx.font = "36px Arial Black";
     ctx.fillStyle = "rgb(240, 240, 240)";
-    ctx.fillText("Press the space bar to play again", WIDTH/2, HEIGHT/2+100);
+
     ctx.font = "96px Arial Black";
-    ctx.fillStyle = "rgb(240, 240, 240)";
     ctx.fillText("Game Over " + "(" + score.toString() + ")", WIDTH/2, HEIGHT/2-20);
+    ctx.font = "36px Arial Black";
+    ctx.fillText("Press the space bar to play again", WIDTH/2, HEIGHT/2+150);
 
     if (score <= highscore) {
-        ctx.font = "36px Arial Black";
-        ctx.fillStyle = "rgb(240, 240, 240)";
         ctx.fillText("Your high score is " + highscore.toString(), WIDTH/2, HEIGHT/2+50);
     } else {
-        ctx.font = "36px Arial Black";
-        ctx.fillStyle = "rgb(240, 240, 240)";
         ctx.fillText("New high score!", WIDTH/2, HEIGHT/2+50);
         highscore = score
         localStorage.setItem("highscore", highscore);
     }
+    
+    gamesPlayed += 1;
+    ctx.fillText("You have played "+gamesPlayed+" games", WIDTH/2, HEIGHT/2+100);
+    localStorage.setItem("gamesPlayed", gamesPlayed);
 
     music.pause();
     gameOverSound.currentTime=0;
