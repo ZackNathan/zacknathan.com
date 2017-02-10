@@ -58,7 +58,8 @@ function init() {
     if (getCookie(highscore) != false) {
         highscore = parseInt(getCookie(highscore));
     } else {
-        document.cookie = "highscore=1";
+        document.cookie = "highscore=1;expires=Fri, 1 Jan 2100 12:00:00 UTC; path=/";
+        highscore = parseInt(getCookie(highscore));
     }
 
     interval = setInterval(frame, 1000/framerate);
@@ -151,13 +152,15 @@ function gameoverScreen() {
         circle(deathmonster[0], deathmonster[1], deathmonster[2]);
     }
 
+    score = Math.trunc(score);
+
     ctx.textAlign = "center";
     ctx.font = "36px Arial Black";
     ctx.fillStyle = "rgb(240, 240, 240)";
     ctx.fillText("Press the space bar to play again", WIDTH/2, HEIGHT/2+100);
     ctx.font = "96px Arial Black";
     ctx.fillStyle = "rgb(240, 240, 240)";
-    ctx.fillText("Game Over " + "(" + Math.trunc(score).toString() + ")", WIDTH/2, HEIGHT/2-20);
+    ctx.fillText("Game Over " + "(" + score.toString() + ")", WIDTH/2, HEIGHT/2-20);
 
     if (score <= highscore) {
         ctx.font = "36px Arial Black";
@@ -168,7 +171,7 @@ function gameoverScreen() {
         ctx.fillStyle = "rgb(240, 240, 240)";
         ctx.fillText("New high score!", WIDTH/2, HEIGHT/2+50);
         highscore = score
-        document.cookie = "highscore="+highscore.toString();
+        document.cookie = "highscore="+highscore.toString()+";expires=Fri, 1 Jan 2100 12:00:00 UTC; path=/";
     }
 
     music.pause();
