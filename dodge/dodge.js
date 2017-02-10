@@ -154,7 +154,7 @@ function gameoverScreen() {
     ctx.textAlign = "center";
     ctx.font = "36px Arial Black";
     ctx.fillStyle = "rgb(240, 240, 240)";
-    ctx.fillText("Press the space bar to play again", WIDTH/2, HEIGHT/2+40);
+    ctx.fillText("Press the space bar to play again", WIDTH/2, HEIGHT/2+100);
     ctx.font = "96px Arial Black";
     ctx.fillStyle = "rgb(240, 240, 240)";
     ctx.fillText("Game Over " + "(" + Math.trunc(score).toString() + ")", WIDTH/2, HEIGHT/2-20);
@@ -162,11 +162,11 @@ function gameoverScreen() {
     if (score <= highscore) {
         ctx.font = "36px Arial Black";
         ctx.fillStyle = "rgb(240, 240, 240)";
-        ctx.fillText("Your high score is " + highscore.toString(), WIDTH/2, HEIGHT/2+80);
+        ctx.fillText("Your high score is " + highscore.toString(), WIDTH/2, HEIGHT/2+50);
     } else {
         ctx.font = "36px Arial Black";
         ctx.fillStyle = "rgb(240, 240, 240)";
-        ctx.fillText("New high score!", WIDTH/2, HEIGHT/2+80);
+        ctx.fillText("New high score!", WIDTH/2, HEIGHT/2+50);
         highscore = score
         document.cookie = "highscore="+highscore.toString();
     }
