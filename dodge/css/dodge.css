@@ -6,7 +6,6 @@ html {
 body {
     height: 100%;
     overflow: auto;
-    background-repeat:no-repeat;
     background-size: 100% 1080px;
     background-color: #310066;
 }

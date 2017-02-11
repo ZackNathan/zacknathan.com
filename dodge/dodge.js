@@ -73,10 +73,12 @@ function init() {
     }
 
     interval = setInterval(frame, 1000/framerate);
-    gameOverSound.volume = 0.4;
-    reverseSound.volume = 0.7;
-    speedUpSound.volume = 0.8;
-    coinSound.volume = 0.6;
+    gameOverSound.volume = 0.2;
+    reverseSound.volume = 0.4;
+    speedUpSound.volume = 0.5;
+    speedDownSound.volume = 0.7;
+    coinSound.volume = 0.3;
+    music.volume = 1.0;
     music.play();
 }
 
@@ -314,11 +316,11 @@ function mute() {
 }
 
 function unmute() {
-    gameOverSound.volume = 0.4;
-    reverseSound.volume = 0.7;
-    speedUpSound.volume = 0.8;
-    coinSound.volume = 0.6;
-    speedDownSound.volume = 1.0;
+    gameOverSound.volume = 0.2;
+    reverseSound.volume = 0.4;
+    speedUpSound.volume = 0.5;
+    speedDownSound.volume = 0.7;
+    coinSound.volume = 0.3;
     music.volume = 1.0;
     muted = false;
 }
