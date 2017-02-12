@@ -14,11 +14,11 @@ function Monster() {
         if (randint(0, 1) == 0) {
             this.horizontal = true;
             this.side = randint(3, 4);
-            this.radius = randint(50, Math.max(WIDTH/3, 100)); //radius is length
+            this.radius = randint(50, Math.max(WIDTH/6, 100)); //radius is length
         } else {
             this.horizontal = false;
             this.side = randint(1, 2);
-            this.radius = randint(50, Math.max(HEIGHT/3, 100)); //radius is length
+            this.radius = randint(50, Math.max(HEIGHT/6, 100)); //radius is length
         }
     } else if (specialDeciderThing == 1) {
         this.powerup = true;
