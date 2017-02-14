@@ -78,7 +78,7 @@ function init() {
 
     sounds.gameOver = new Audio('audio/gameover.mp3');
     sounds.reverser = new Audio('audio/reverse.mp3');
-    sounds.speedUp = new Audio('audio/speedUp.mp3');
+    sounds.speedUp = new Audio('audio/speedup.mp3');
     sounds.speedDown = new Audio('audio/speeddown.mp3');
     sounds.coin = new Audio('audio/gold.mp3');
     sounds.music = new Audio('audio/music.mp3');
