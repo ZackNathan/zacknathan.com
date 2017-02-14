@@ -230,6 +230,7 @@ function gameoverScreen() {
     gamesPlayed = parseInt(gamesPlayed) + 1;
     ctx.fillText("You have played "+gamesPlayed+" games", WIDTH/2, HEIGHT/2+100);
     localStorage.setItem("gamesPlayed", gamesPlayed);
+    ctx.fillText("zacknathan.com/dodge", WIDTH/2, 150);
 
     sounds.music.pause();
     sounds.gameOver.currentTime=0;
