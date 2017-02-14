@@ -1,28 +1,20 @@
 function keyDown(evt){
     switch (evt.keyCode) {
         case 38:  /* Up arrow was pressed */
-            upPressed = true;
-            break;
         case 87:  /* W */
-            upPressed = true;
+            keyPressed.up = true;
             break;
         case 40:  /* Down arrow was pressed */
-            downPressed = true;
-            break;
         case 83:  /* S */
-            downPressed = true;
+            keyPressed.down = true;
             break;
         case 37:  /* Left arrow was pressed */
-            leftPressed = true;
-            break;
         case 65:  /* A */
-            leftPressed = true;
+            keyPressed.left = true;
             break;
         case 39:  /* Right arrow was pressed */
-            rightPressed = true;
-            break;
         case 68:  /* D */
-            rightPressed = true;
+            keyPressed.right = true;
             break;
         case 32: /* Space Bar */
             if (gameover) {
@@ -30,7 +22,7 @@ function keyDown(evt){
             }
             break;
         case 77: /* M */
-            if (muted) {
+            if (sounds.muted) {
                 unmute();
             } else {
                 mute();
@@ -40,29 +32,21 @@ function keyDown(evt){
 
 function keyUp(evt) {
     switch (evt.keyCode) {
-        case 38:  /* Up arrow was pressed */
-            upPressed = false;
-            break;
+        case 38:  /* Up arrow was released */
         case 87:  /* W */
-            upPressed = false;
+            keyPressed.up = false;
             break;
-        case 40:  /* Down arrow was pressed */
-            downPressed = false;
-            break;
+        case 40:  /* Down arrow was released */
         case 83:  /* S */
-            downPressed = false;
+            keyPressed.down = false;
             break
-        case 37:  /* Left arrow was pressed */
-            leftPressed = false;
-            break;
+        case 37:  /* Left arrow was released */
         case 65:  /* A */
-            leftPressed = false;
+            keyPressed.left = false;
             break;
-        case 39:  /* Right arrow was pressed */
-            rightPressed = false;
-            break;
+        case 39:  /* Right arrow was released */
         case 68:  /* D */
-            rightPressed = false;
+            keyPressed.right = false;
             break;
         }
 }

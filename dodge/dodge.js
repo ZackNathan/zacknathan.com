@@ -12,33 +12,15 @@ var HEIGHT;
 var x;
 var y;
 var radius = 15;
-var upPressed = false;
-var downPressed = false;
-var leftPressed = false;
-var rightPressed = false;
 var monsters = []
 var gameover = false;
 var interval;
 var deathmonster = [];
 var diagonalSlow = false;
-var minColour = 100;
-var maxColour = 250;
-var r1 = [randint(minColour+1, maxColour-1), [-1, 1][randint(0, 1)]];
-var g1 = [randint(minColour+1, maxColour-1), [-1, 1][randint(0, 1)]];
-var b1 = [randint(minColour+1, maxColour-1), [-1, 1][randint(0, 1)]];
-var r2 = [randint(minColour+1, maxColour-1), [-1, 1][randint(0, 1)]];
-var g2 = [randint(minColour+1, maxColour-1), [-1, 1][randint(0, 1)]];
-var b2 = [randint(minColour+1, maxColour-1), [-1, 1][randint(0, 1)]];
-var foregroundColour = "rgb("+(255-(r1[0]+r2[0])/2)+", "+(255-(g1[0]+g2[0])/2)+", "+(255-(b1[0]+b2[0])/2)+")";
-var background;
+var keyPressed = {};
+var colour = {};
+var sounds = {};
 var rotatePeriod = 100;
-var music = new Audio('audio/music.mp3');
-var coinSound = new Audio('audio/gold.mp3');
-var speedUpSound = new Audio('audio/speedup.mp3');
-var speedDownSound = new Audio('audio/speeddown.mp3');
-var reverseSound = new Audio('audio/reverse.mp3');
-var gameOverSound = new Audio('audio/gameover.mp3');
-var muted = false;
 var highscore;
 var gamesPlayed;
 var monsterPeriod = 8;
@@ -55,8 +37,7 @@ function init() {
     x = WIDTH/2;
     y = HEIGHT/2;
     monsterPeriod = Math.round(8.0/(WIDTH*HEIGHT/1152000.0));
-
-    background = ctx.createLinearGradient(0, 0, WIDTH, HEIGHT);
+    colour.gradient = ctx.createLinearGradient(0, 0, WIDTH, HEIGHT);
 
     if (localStorage.getItem("highscore")) {
         highscore = localStorage.getItem("highscore");
@@ -73,13 +54,43 @@ function init() {
     }
 
     interval = setInterval(frame, 1000/framerate);
-    gameOverSound.volume = 0.2;
-    reverseSound.volume = 0.4;
-    speedUpSound.volume = 0.5;
-    speedDownSound.volume = 0.7;
-    coinSound.volume = 0.3;
-    music.volume = 1.0;
-    music.play();
+
+    keyPressed.up = false;
+    keyPressed.down = false;
+    keyPressed.left = false;
+    keyPressed.right = false;
+
+    colour.min = 100;
+    colour.max = 250;
+    colour.r1 = [randint(colour.min+1, colour.max-1), [-1, 1][randint(0, 1)]];
+    colour.g1 = [randint(colour.min+1, colour.max-1), [-1, 1][randint(0, 1)]];
+    colour.b1 = [randint(colour.min+1, colour.max-1), [-1, 1][randint(0, 1)]];
+    colour.r2 = [randint(colour.min+1, colour.max-1), [-1, 1][randint(0, 1)]];
+    colour.g2 = [randint(colour.min+1, colour.max-1), [-1, 1][randint(0, 1)]];
+    colour.b2 = [randint(colour.min+1, colour.max-1), [-1, 1][randint(0, 1)]];
+    colour.foreground = "rgb("+(255-(colour.r1[0]+colour.r2[0])/2)+", "+
+                                (255-(colour.g1[0]+colour.g2[0])/2)+", "+
+                                (255-(colour.b1[0]+colour.b2[0])/2)+")";
+    colour.speedUp = "rgb(40, 230, 40)";
+    colour.speedDown = "rgb(230, 40, 40)";
+    colour.reverser = "rgb(230, 40, 230)";
+    colour.coin = "rgb(230, 230, 40)";
+
+    sounds.gameOver = new Audio('audio/gameover.mp3');
+    sounds.reverser = new Audio('audio/reverse.mp3');
+    sounds.speedUp = new Audio('audio/speedUp.mp3');
+    sounds.speedDown = new Audio('audio/speeddown.mp3');
+    sounds.coin = new Audio('audio/gold.mp3');
+    sounds.music = new Audio('audio/music.mp3');
+
+    sounds.muted = false;
+    sounds.gameOver.volume = 0.2;
+    sounds.reverser.volume = 0.4;
+    sounds.speedUp.volume = 0.5;
+    sounds.speedDown.volume = 0.7;
+    sounds.coin.volume = 0.3;
+    sounds.music.volume = 1.0;
+    sounds.music.play();
 }
 
 function randint(min, max) {
@@ -102,13 +113,13 @@ function rect(x, y, w, h) {
 function move() {
     dx = 0;
     dy = 0;
-    if (upPressed) {
+    if (keyPressed.up) {
         dy -= speed;
-    } if (downPressed) {
+    } if (keyPressed.down) {
         dy += speed;
-    } if (leftPressed) {
+    } if (keyPressed.left) {
         dx -= speed;
-    } if (rightPressed) {
+    } if (keyPressed.right) {
         dx += speed;
     }
     if (Math.abs(dx) + Math.abs(dy) > speed && diagonalSlow) {
@@ -137,6 +148,40 @@ function move() {
     }
 
     for (var i = monsters.length-1; i >= 0; i--) {
+        if (monsters[i].isCollide(x, y, 10) == true) {
+            if (monsters[i].powerup) {
+                if (monsters[i].coin) {
+                    score += 100;
+                    coins += 1;
+                    sounds.coin.currentTime = 0;
+                    sounds.coin.play();
+                } else if (monsters[i].speedUp) {
+					if (speed <= -2) {
+						speed -= 1;
+					} else if (speed >= 2) {
+						speed += 1;
+					}
+                    sounds.speedUp.currentTime = 0;
+                    sounds.speedUp.play();
+                } else if (monsters[i].speedDown) {
+					if (speed <= -2) {
+						speed += 1;
+					} else if (speed >= 2) {
+						speed -= 1;
+					}
+                    sounds.speedDown.currentTime = 0;
+                    sounds.speedDown.play();
+                } else if (monsters[i].reverser) {
+                    speed *= -1;
+                    sounds.reverser.currentTime = 0;
+                    sounds.reverser.play();
+                }
+                monsters[i].dead = true;
+            } else {
+                gameover = true;
+            }
+        }
+
         if (!monsters[i].dead) {
             monsters[i].moveMonster();
         } else {
@@ -186,9 +231,9 @@ function gameoverScreen() {
     ctx.fillText("You have played "+gamesPlayed+" games", WIDTH/2, HEIGHT/2+100);
     localStorage.setItem("gamesPlayed", gamesPlayed);
 
-    music.pause();
-    gameOverSound.currentTime=0;
-    gameOverSound.play();
+    sounds.music.pause();
+    sounds.gameOver.currentTime=0;
+    sounds.gameOver.play();
 }
 
 function restart() {
@@ -201,98 +246,67 @@ function restart() {
     speed = 5;
     coins = 0;
 
-    r1 = [randint(minColour+1, maxColour-1), [-1, 1][randint(0, 1)]];
-    g1 = [randint(minColour+1, maxColour-1), [-1, 1][randint(0, 1)]];
-    b1 = [randint(minColour+1, maxColour-1), [-1, 1][randint(0, 1)]];
-    r2 = [randint(minColour+1, maxColour-1), [-1, 1][randint(0, 1)]];
-    g2 = [randint(minColour+1, maxColour-1), [-1, 1][randint(0, 1)]];
-    b2 = [randint(minColour+1, maxColour-1), [-1, 1][randint(0, 1)]];
+    colour.r1 = [randint(colour.min+1, colour.max-1), [-1, 1][randint(0, 1)]];
+    colour.g1 = [randint(colour.min+1, colour.max-1), [-1, 1][randint(0, 1)]];
+    colour.b1 = [randint(colour.min+1, colour.max-1), [-1, 1][randint(0, 1)]];
+    colour.r2 = [randint(colour.min+1, colour.max-1), [-1, 1][randint(0, 1)]];
+    colour.g2 = [randint(colour.min+1, colour.max-1), [-1, 1][randint(0, 1)]];
+    colour.b2 = [randint(colour.min+1, colour.max-1), [-1, 1][randint(0, 1)]];
 
-    var upPressed = false;
-    var downPressed = false;
-    var leftPressed = false;
-    var rightPressed = false;
+    keyPressed.up = false;
+    keyPressed.down = false;
+    keyPressed.left = false;
+    keyPressed.right = false;
     interval = setInterval(frame, 1000/framerate);
 
-    gameOverSound.pause();
-    music.currentTime=0;
-    music.play();
+    sounds.gameOver.pause();
+    sounds.music.currentTime=0;
+    sounds.music.play();
 }
 
 function changeColour(c) {
-    if (c[0] >= maxColour) {c[1] = -1;}
-    else if (c[0] <= minColour) {c[1] = 1;}
+    if (c[0] >= colour.max) {c[1] = -1;}
+    else if (c[0] <= colour.min) {c[1] = 1;}
     c[0] += c[1];
 }
 
 function draw() {
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
 
-    changeColour(r1)
-    changeColour(r2)
-    changeColour(g1)
-    changeColour(g2)
-    changeColour(b1)
-    changeColour(b2)
+    changeColour(colour.r1);
+    changeColour(colour.r2);
+    changeColour(colour.g1);
+    changeColour(colour.g2);
+    changeColour(colour.b1);
+    changeColour(colour.b2);
 
-    background = ctx.createLinearGradient(
+    colour.gradient = ctx.createLinearGradient(
                     Math.max(Math.min( WIDTH, WIDTH - WIDTH*((Math.abs((3*rotatePeriod/8.0-(count%rotatePeriod)))-(rotatePeriod/8.0))/(rotatePeriod/4.0)) ), 0),
                  Math.max(Math.min( HEIGHT, HEIGHT - HEIGHT*((Math.abs((5*rotatePeriod/8.0-(count%rotatePeriod)))-(rotatePeriod/8.0))/(rotatePeriod/4.0)) ), 0),
             WIDTH - Math.max(Math.min( WIDTH, WIDTH - WIDTH*((Math.abs((3*rotatePeriod/8.0-(count%rotatePeriod)))-(rotatePeriod/8.0))/(rotatePeriod/4.0)) ), 0),
         HEIGHT - Math.max(Math.min( HEIGHT, HEIGHT - HEIGHT*((Math.abs((5*rotatePeriod/8.0-(count%rotatePeriod)))-(rotatePeriod/8.0))/(rotatePeriod/4.0)) ), 0));
 
-    background.addColorStop(0, "rgb("+r1[0]+", "+g1[0]+", "+b1[0]+")");
-    background.addColorStop(1, "rgb("+r2[0]+", "+g2[0]+", "+b2[0]+")");
+    colour.gradient.addColorStop(0, "rgb("+colour.r1[0]+", "+colour.g1[0]+", "+colour.b1[0]+")");
+    colour.gradient.addColorStop(1, "rgb("+colour.r2[0]+", "+colour.g2[0]+", "+colour.b2[0]+")");
 
-    ctx.fillStyle = background;
+    ctx.fillStyle = colour.gradient;
     rect(0 ,0, WIDTH, HEIGHT);
 
-    foregroundColour = "rgb("+(Math.trunc(255-(r1[0]+r2[0])/2)-100)+", "+(Math.trunc(255-(g1[0]+g2[0])/2)-100)+", "+(Math.trunc(255-(b1[0]+b2[0])/2)-100)+")";
-    ctx.fillStyle = foregroundColour;
+    colour.foreground = "rgb("+(Math.trunc(255-(colour.r1[0]+colour.r2[0])/2)-100)+", "+
+                                (Math.trunc(255-(colour.g1[0]+colour.g2[0])/2)-100)+", "+
+                                (Math.trunc(255-(colour.b1[0]+colour.b2[0])/2)-100)+")";
+    ctx.fillStyle = colour.foreground;
     circle(x, y, radius);
     ctx.fillStyle = "white";
     circle(x, y, radius-4);
-    ctx.fillStyle = foregroundColour;
+    ctx.fillStyle = colour.foreground;
 
     for (var i = 0; i < monsters.length; i++) {
-        if (monsters[i].isCollide(x, y, 10) == true) {
-            if (monsters[i].powerup) {
-                if (monsters[i].coin) {
-                    score += 100;
-                    coins += 1;
-                    coinSound.currentTime = 0;
-                    coinSound.play();
-                } else if (monsters[i].speedup) {
-					if (speed <= -2) {
-						speed -= 1;
-					} else if (speed >= 2) {
-						speed += 1;
-					}
-                    speedUpSound.currentTime = 0;
-                    speedUpSound.play();
-                } else if (monsters[i].speeddown) {
-					if (speed <= -2) {
-						speed += 1;
-					} else if (speed >= 2) {
-						speed -= 1;
-					}
-                    speedDownSound.currentTime = 0;
-                    speedDownSound.play();
-                } else if (monsters[i].reverser) {
-                    speed *= -1;
-                    reverseSound.currentTime = 0;
-                    reverseSound.play();
-                }
-                monsters[i].dead = true;
-            } else {
-                gameover = true;
-            }
-        }
         monsters[i].drawMonster();
     }
 
     ctx.textAlign = "center";
-    ctx.fillStyle = foregroundColour;
+    ctx.fillStyle = colour.foreground;
     ctx.font = "42px Arial Black";
     ctx.fillText(Math.trunc(score), WIDTH/2, 40);
     ctx.textAlign = "left";
@@ -306,23 +320,23 @@ function draw() {
 }
 
 function mute() {
-    gameOverSound.volume = 0;
-    reverseSound.volume = 0;
-    speedUpSound.volume = 0;
-    coinSound.volume = 0;
-    speedDownSound.volume = 0;
-    music.volume = 0;
-    muted = true;
+    sounds.gameOver.volume = 0;
+    sounds.reverser.volume = 0;
+    sounds.speedUp.volume = 0;
+    sounds.speedDown.volume = 0;
+    sounds.coin.volume = 0;
+    sounds.music.volume = 0;
+    sounds.muted = true;
 }
 
 function unmute() {
-    gameOverSound.volume = 0.2;
-    reverseSound.volume = 0.4;
-    speedUpSound.volume = 0.5;
-    speedDownSound.volume = 0.7;
-    coinSound.volume = 0.3;
-    music.volume = 1.0;
-    muted = false;
+    sounds.gameOver.volume = 0.2;
+    sounds.reverser.volume = 0.4;
+    sounds.speedUp.volume = 0.5;
+    sounds.speedDown.volume = 0.7;
+    sounds.coin.volume = 0.3;
+    sounds.music.volume = 1.0;
+    sounds.muted = false;
 }
 
 function frame() {
@@ -339,6 +353,6 @@ function frame() {
 }
 
 // Main part of program
-init();
+window.onLoad = init();
 window.addEventListener('keydown', keyDown, true);
 window.addEventListener('keyup', keyUp, true);

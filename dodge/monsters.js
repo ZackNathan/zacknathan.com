@@ -2,14 +2,14 @@ function Monster() {
     this.radius = randint(20, 40);
     this.dead = false;
     this.coin = false;
-    this.speedup = false;
-    this.speeddown = false;
+    this.speedUp = false;
+    this.speedDown = false;
     this.reverser = false;
     this.powerup = false;
     this.side = randint(1, 4);
     //line shaped monsters and coins
-    var specialDeciderThing = randint(0, 8);
-    if (specialDeciderThing == 0) {
+    var randomizer = randint(0, 8);
+    if (randomizer == 0) {
         this.line = true;
         if (randint(0, 1) == 0) {
             this.horizontal = true;
@@ -20,19 +20,19 @@ function Monster() {
             this.side = randint(1, 2);
             this.radius = randint(50, Math.max(Math.min(HEIGHT/5, 350), 100)); //radius is length
         }
-    } else if (specialDeciderThing == 1) {
+    } else if (randomizer == 1) {
         this.powerup = true;
         this.coin = true;
         this.radius = 12;
-    } else if (specialDeciderThing == 2) {
+    } else if (randomizer == 2) {
         this.powerup = true;
         this.radius = 12;
-        var specialDeciderThing = randint(0, 2);
+        var randomizer = randint(0, 2);
 
-        if (specialDeciderThing == 0) {
-            this.speedup = true
-        } else if (specialDeciderThing == 1) {
-            this.speeddown = true
+        if (randomizer == 0) {
+            this.speedUp = true
+        } else if (randomizer == 1) {
+            this.speedDown = true
         } else {
             this.reverser = true
         }
@@ -74,19 +74,19 @@ Monster.prototype.moveMonster = function() {
 }
 
 Monster.prototype.drawMonster = function() {
-    ctx.fillStyle = foregroundColour;
-    if (this.speedup) {
+    ctx.fillStyle = colour.foreground;
+    if (this.speedUp) {
         this.drawOutline();
-        ctx.fillStyle = "rgb(40, 230, 40)";
-    } else if (this.speeddown) {
+        ctx.fillStyle = colour.speedUp;
+    } else if (this.speedDown) {
         this.drawOutline();
-        ctx.fillStyle = "rgb(230, 40, 40)";
+        ctx.fillStyle = colour.speedDown;
     } else if (this.reverser) {
         this.drawOutline();
-        ctx.fillStyle = "rgb(230, 40, 230)";
+        ctx.fillStyle = colour.reverser;
 	} else if (this.coin) {
         this.drawOutline();
-        ctx.fillStyle = "rgb(230, 230, 40)";
+        ctx.fillStyle = colour.coin;
     }
 
     if (this.line) {
