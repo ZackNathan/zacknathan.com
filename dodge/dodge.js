@@ -20,12 +20,55 @@ var diagonalSlow = false;
 var keyPressed = {};
 var colour = {};
 var sounds = {};
+var mouse = {};
 var rotatePeriod = 100;
 var highscore;
 var gamesPlayed;
 var monsterPeriod = 8;
 
-// Important starting function
+function randint(min, max) {
+    return Math.floor(min + Math.random() * (max - min + 1));
+}
+
+function circle(x, y, r) {
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI*2, true);
+    ctx.fill();
+}
+
+function rect(x, y, w, h) {
+    ctx.beginPath();
+    ctx.rect(x, y, w, h);
+    ctx.closePath();
+    ctx.fill();
+}
+
+function changeColour(c) {
+    if (c[0] >= colour.max) {c[1] = -1;}
+    else if (c[0] <= colour.min) {c[1] = 1;}
+    c[0] += c[1];
+}
+
+function mute() {
+    sounds.gameOver.volume = 0;
+    sounds.reverser.volume = 0;
+    sounds.speedUp.volume = 0;
+    sounds.speedDown.volume = 0;
+    sounds.coin.volume = 0;
+    sounds.music.volume = 0;
+    sounds.muted = true;
+}
+
+function unmute() {
+    sounds.gameOver.volume = 0.2;
+    sounds.reverser.volume = 0.4;
+    sounds.speedUp.volume = 0.5;
+    sounds.speedDown.volume = 0.7;
+    sounds.coin.volume = 0.3;
+    sounds.music.volume = 1.0;
+    sounds.muted = false;
+}
+
 function init() {
     canvas = document.getElementById("game");
     canvas.width = window.innerWidth;
@@ -36,6 +79,9 @@ function init() {
     HEIGHT = canvas.height;
     x = WIDTH/2;
     y = HEIGHT/2;
+    mouse.x = x;
+    mouse.y = y;
+    mouse.control = false;
     monsterPeriod = Math.round(8.0/(WIDTH*HEIGHT/1152000.0));
     colour.gradient = ctx.createLinearGradient(0, 0, WIDTH, HEIGHT);
 
@@ -93,35 +139,58 @@ function init() {
     sounds.music.play();
 }
 
-function randint(min, max) {
-    return Math.floor(min + Math.random() * (max - min + 1));
-}
-
-function circle(x, y, r) {
-    ctx.beginPath();
-    ctx.arc(x, y, r, 0, Math.PI*2, true);
-    ctx.fill();
-}
-
-function rect(x, y, w, h) {
-    ctx.beginPath();
-    ctx.rect(x, y, w, h);
-    ctx.closePath();
-    ctx.fill();
+function frame() {
+    if (count % monsterPeriod == 0) {
+        monsters.push(new Monster());
+    }
+    move();
+    draw();
+    count++;
+    score++;
+	if (speed < 0) {
+		score += 0.5;
+	}
 }
 
 function move() {
     dx = 0;
     dy = 0;
-    if (keyPressed.up) {
-        dy -= speed;
-    } if (keyPressed.down) {
-        dy += speed;
-    } if (keyPressed.left) {
-        dx -= speed;
-    } if (keyPressed.right) {
-        dx += speed;
+    if (mouse.control) {
+        if (Math.abs(mouse.y-y) >= Math.abs(speed) || Math.abs(mouse.x-x) >= Math.abs(speed)) {
+            mouse.angle = Math.atan2(mouse.y-y, -(mouse.x-x)) + Math.PI;
+            dy = -Math.abs(speed)*Math.sin(mouse.angle)/Math.abs(Math.cos(mouse.angle));
+            if (Math.abs(dy) > Math.abs(speed)) {
+                if (dy > 0) {
+                    dy = Math.abs(speed);
+                } else {
+                    dy = -Math.abs(speed);
+                }
+            }
+            dx = Math.abs(speed)*Math.cos(mouse.angle)/Math.abs(Math.sin(mouse.angle));
+            if (Math.abs(dx) > Math.abs(speed)) {
+                if (dx > 0) {
+                    dx = Math.abs(speed);
+                } else {
+                    dx = -Math.abs(speed);
+                }
+            }
+        }
+        if (speed < 0) {
+            dy *= -1;
+            dx *= -1;
+        }
+    } else {
+        if (keyPressed.up) {
+            dy -= speed;
+        } if (keyPressed.down) {
+            dy += speed;
+        } if (keyPressed.left) {
+            dx -= speed;
+        } if (keyPressed.right) {
+            dx += speed;
+        }
     }
+
     if (Math.abs(dx) + Math.abs(dy) > speed && diagonalSlow) {
         dx /= 2;
         dy /= 2;
@@ -190,87 +259,6 @@ function move() {
     }
 }
 
-function gameoverScreen() {
-    clearInterval(interval);
-    ctx.clearRect(0, 0, WIDTH, HEIGHT);
-    ctx.fillStyle = "rgb(0, 0, 0)";
-    rect(0 ,0, WIDTH, HEIGHT);
-
-    ctx.fillStyle = "rgb(150, 30, 30)";
-    circle(x, y, radius);
-
-    if (deathmonster[3]) {
-        if (deathmonster[4]) {
-            rect(deathmonster[0] - deathmonster[2], deathmonster[1] - 7, deathmonster[2] * 2, 14);
-        } else {
-            rect(deathmonster[0] - 7, deathmonster[1] - deathmonster[2], 14, deathmonster[2] * 2);
-        }
-    } else {
-        circle(deathmonster[0], deathmonster[1], deathmonster[2]);
-    }
-
-    score = Math.trunc(score);
-
-    ctx.textAlign = "center";
-    ctx.fillStyle = "rgb(240, 240, 240)";
-
-    ctx.font = "96px Arial Black";
-    ctx.fillText("Game Over " + "(" + score.toString() + ")", WIDTH/2, HEIGHT/2-20);
-    ctx.font = "36px Arial Black";
-    ctx.fillText("Press the space bar to play again", WIDTH/2, HEIGHT/2+150);
-
-    if (score <= highscore) {
-        ctx.fillText("Your high score is " + highscore.toString(), WIDTH/2, HEIGHT/2+50);
-    } else {
-        ctx.fillText("New high score!", WIDTH/2, HEIGHT/2+50);
-        highscore = score
-        localStorage.setItem("highscore", highscore);
-    }
-
-    gamesPlayed = parseInt(gamesPlayed) + 1;
-    ctx.fillText("You have played "+gamesPlayed+" games", WIDTH/2, HEIGHT/2+100);
-    localStorage.setItem("gamesPlayed", gamesPlayed);
-    ctx.fillText("zacknathan.com/dodge", WIDTH/2, 150);
-
-    sounds.music.pause();
-    sounds.gameOver.currentTime=0;
-    sounds.gameOver.play();
-}
-
-function restart() {
-    gameover = false;
-    x = WIDTH/2;
-    y = HEIGHT/2;
-    monsters = [];
-    count = 1;
-    score = 1;
-    speed = 5;
-    coins = 0;
-
-    colour.r1 = [randint(colour.min+1, colour.max-1), [-1, 1][randint(0, 1)]];
-    colour.g1 = [randint(colour.min+1, colour.max-1), [-1, 1][randint(0, 1)]];
-    colour.b1 = [randint(colour.min+1, colour.max-1), [-1, 1][randint(0, 1)]];
-    colour.r2 = [randint(colour.min+1, colour.max-1), [-1, 1][randint(0, 1)]];
-    colour.g2 = [randint(colour.min+1, colour.max-1), [-1, 1][randint(0, 1)]];
-    colour.b2 = [randint(colour.min+1, colour.max-1), [-1, 1][randint(0, 1)]];
-
-    keyPressed.up = false;
-    keyPressed.down = false;
-    keyPressed.left = false;
-    keyPressed.right = false;
-    interval = setInterval(frame, 1000/framerate);
-
-    sounds.gameOver.pause();
-    sounds.music.currentTime=0;
-    sounds.music.play();
-}
-
-function changeColour(c) {
-    if (c[0] >= colour.max) {c[1] = -1;}
-    else if (c[0] <= colour.min) {c[1] = 1;}
-    c[0] += c[1];
-}
-
 function draw() {
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
 
@@ -320,40 +308,91 @@ function draw() {
     }
 }
 
-function mute() {
-    sounds.gameOver.volume = 0;
-    sounds.reverser.volume = 0;
-    sounds.speedUp.volume = 0;
-    sounds.speedDown.volume = 0;
-    sounds.coin.volume = 0;
-    sounds.music.volume = 0;
-    sounds.muted = true;
-}
+function gameoverScreen() {
+    clearInterval(interval);
+    ctx.clearRect(0, 0, WIDTH, HEIGHT);
+    ctx.fillStyle = "rgb(0, 0, 0)";
+    rect(0 ,0, WIDTH, HEIGHT);
 
-function unmute() {
-    sounds.gameOver.volume = 0.2;
-    sounds.reverser.volume = 0.4;
-    sounds.speedUp.volume = 0.5;
-    sounds.speedDown.volume = 0.7;
-    sounds.coin.volume = 0.3;
-    sounds.music.volume = 1.0;
-    sounds.muted = false;
-}
+    ctx.fillStyle = "rgb(150, 30, 30)";
+    circle(x, y, radius);
 
-function frame() {
-    if (count % monsterPeriod == 0) {
-        monsters.push(new Monster());
+    if (deathmonster[3]) {
+        if (deathmonster[4]) {
+            rect(deathmonster[0] - deathmonster[2], deathmonster[1] - 7, deathmonster[2] * 2, 14);
+        } else {
+            rect(deathmonster[0] - 7, deathmonster[1] - deathmonster[2], 14, deathmonster[2] * 2);
+        }
+    } else {
+        circle(deathmonster[0], deathmonster[1], deathmonster[2]);
     }
-    move();
-    draw();
-    count++;
-    score++;
-	if (speed < 0) {
-		score += 0.5;
-	}
+
+    score = Math.trunc(score);
+
+    ctx.textAlign = "center";
+    ctx.fillStyle = "rgb(240, 240, 240)";
+
+    ctx.font = "96px Arial Black";
+    ctx.fillText("Game Over " + "(" + score.toString() + ")", WIDTH/2, HEIGHT/2-20);
+    ctx.font = "36px Arial Black";
+    if (mouse.control) {
+        ctx.fillText("Press shift to use keyboard controls", WIDTH/2, HEIGHT/2+200);
+        ctx.fillText("Click to play again", WIDTH/2, HEIGHT/2+150);
+    } else {
+        ctx.fillText("Press shift to use mouse controls", WIDTH/2, HEIGHT/2+200);
+        ctx.fillText("Press the space bar to play again", WIDTH/2, HEIGHT/2+150);
+    }
+
+    if (score <= highscore) {
+        ctx.fillText("Your high score is " + highscore.toString(), WIDTH/2, HEIGHT/2+50);
+    } else {
+        ctx.fillText("New high score!", WIDTH/2, HEIGHT/2+50);
+        highscore = score
+        localStorage.setItem("highscore", highscore);
+    }
+
+    gamesPlayed = parseInt(gamesPlayed) + 1;
+    ctx.fillText("You have played "+gamesPlayed+" games", WIDTH/2, HEIGHT/2+100);
+    localStorage.setItem("gamesPlayed", gamesPlayed);
+    ctx.fillText("zacknathan.com/dodge", WIDTH/2, 150);
+
+    sounds.music.pause();
+    sounds.gameOver.currentTime=0;
+    sounds.gameOver.play();
 }
 
-// Main part of program
+function restart() {
+    gameover = false;
+    x = WIDTH/2;
+    y = HEIGHT/2;
+    mouse.x = x;
+    mouse.y = y;
+    monsters = [];
+    count = 1;
+    score = 1;
+    speed = 5;
+    coins = 0;
+
+    colour.r1 = [randint(colour.min+1, colour.max-1), [-1, 1][randint(0, 1)]];
+    colour.g1 = [randint(colour.min+1, colour.max-1), [-1, 1][randint(0, 1)]];
+    colour.b1 = [randint(colour.min+1, colour.max-1), [-1, 1][randint(0, 1)]];
+    colour.r2 = [randint(colour.min+1, colour.max-1), [-1, 1][randint(0, 1)]];
+    colour.g2 = [randint(colour.min+1, colour.max-1), [-1, 1][randint(0, 1)]];
+    colour.b2 = [randint(colour.min+1, colour.max-1), [-1, 1][randint(0, 1)]];
+
+    keyPressed.up = false;
+    keyPressed.down = false;
+    keyPressed.left = false;
+    keyPressed.right = false;
+    interval = setInterval(frame, 1000/framerate);
+
+    sounds.gameOver.pause();
+    sounds.music.currentTime=0;
+    sounds.music.play();
+}
+
 window.onLoad = init();
 window.addEventListener('keydown', keyDown, true);
 window.addEventListener('keyup', keyUp, true);
+window.addEventListener('mousemove', getMousePos, true);
+window.addEventListener('click', click, true);

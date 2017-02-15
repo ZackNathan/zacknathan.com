@@ -1,5 +1,5 @@
-function keyDown(evt){
-    switch (evt.keyCode) {
+function keyDown(event){
+    switch (event.keyCode) {
         case 38:  /* Up arrow was pressed */
         case 87:  /* W */
             keyPressed.up = true;
@@ -21,6 +21,12 @@ function keyDown(evt){
                 restart();
             }
             break;
+        case 16: /* Shift */
+            if (gameover) {
+                mouse.control = !mouse.control;
+                restart();
+            }
+            break;
         case 77: /* M */
             if (sounds.muted) {
                 unmute();
@@ -30,8 +36,8 @@ function keyDown(evt){
     }
 }
 
-function keyUp(evt) {
-    switch (evt.keyCode) {
+function keyUp(event) {
+    switch (event.keyCode) {
         case 38:  /* Up arrow was released */
         case 87:  /* W */
             keyPressed.up = false;
@@ -49,4 +55,15 @@ function keyUp(evt) {
             keyPressed.right = false;
             break;
         }
+}
+
+function getMousePos(event) {
+    mouse.x = event.clientX;
+    mouse.y = event.clientY;
+}
+
+function click(event) {
+    if (gameover) {
+        restart();
+    }
 }
