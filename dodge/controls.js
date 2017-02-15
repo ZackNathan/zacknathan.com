@@ -18,12 +18,9 @@ function keyDown(event){
             break;
         case 32: /* Space Bar */
             if (gameover) {
-                restart();
-            }
-            break;
-        case 16: /* Shift */
-            if (gameover) {
-                mouse.control = !mouse.control;
+                if (mouse.control) {
+                    mouse.control = false;
+                }
                 restart();
             }
             break;
@@ -64,6 +61,9 @@ function getMousePos(event) {
 
 function click(event) {
     if (gameover) {
+        if (!mouse.control) {
+            mouse.control = true;
+        }
         restart();
     }
 }

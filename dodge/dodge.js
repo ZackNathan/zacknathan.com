@@ -336,10 +336,10 @@ function gameoverScreen() {
     ctx.fillText("Game Over " + "(" + score.toString() + ")", WIDTH/2, HEIGHT/2-20);
     ctx.font = "36px Arial Black";
     if (mouse.control) {
-        ctx.fillText("Press shift to use keyboard controls", WIDTH/2, HEIGHT/2+200);
+        ctx.fillText("Press space to use keyboard controls", WIDTH/2, HEIGHT/2+200);
         ctx.fillText("Click to play again", WIDTH/2, HEIGHT/2+150);
     } else {
-        ctx.fillText("Press shift to use mouse controls", WIDTH/2, HEIGHT/2+200);
+        ctx.fillText("Click to use mouse controls", WIDTH/2, HEIGHT/2+200);
         ctx.fillText("Press the space bar to play again", WIDTH/2, HEIGHT/2+150);
     }
 
