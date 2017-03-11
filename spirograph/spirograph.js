@@ -1,6 +1,6 @@
 var canvas;
 var ctx;
-var framerate = 1000;
+var framerate = 60;
 var WIDTH;
 var HEIGHT;
 var degree = 0;
@@ -10,6 +10,38 @@ function randint(min, max) {
 }
 
 function click(event) {
+    frame = 0;
+    degree = 0;
+
+    a = new Circle();
+    a.orbitradius = randint(HEIGHT/6, HEIGHT/3);
+    a.orbittime = randint(100, 500);
+    a.colour = "rgb(100, 100, 100)";
+
+    b = new Circle();
+    b.colour = "rgb(0, 0, 255)";
+
+    c = new Circle();
+    c.colour = "rgb(0, 255, 0)";
+
+    d = new Circle();
+    d.colour = "rgb(255, 0, 0)";
+
+    e = new Circle();
+    e.colour = "rgb(0, 255, 255)";
+
+    f = new Circle();
+    f.colour = "rgb(255, 255, 0)";
+
+    g = new Circle();
+    g.colour = "rgb(255, 0, 255)";
+
+    ctx.beginPath();
+    ctx.rect(0, 0, WIDTH, HEIGHT);
+    ctx.fillStyle = "rgb(0, 0, 0)";
+    ctx.fill();
+
+    interval = setInterval(frame, 1000/framerate);
 }
 
 function Circle() {
@@ -50,13 +82,18 @@ function frame() {
     b.render(a);
     c.render(b);
     d.render(c);
-    //e.render(d);
-    //f.render(e);
-    //g.render(f);
+    e.render(d);
+    f.render(e);
+    g.render(f);
 
     ctx.fillStyle = "rgb(255, 255, 255)";
     ctx.beginPath();
     ctx.arc(WIDTH/2, HEIGHT/2, 5, 0, Math.PI*2, true);
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.rect(0, 0, WIDTH, HEIGHT);
+    ctx.fillStyle = "rgba(0, 0, 0, 0.03)";
     ctx.fill();
 }
 
@@ -74,22 +111,22 @@ function init() {
     a.orbittime = randint(100, 500);
     a.colour = "rgb(100, 100, 100)";
 
-    b = new Circle()
+    b = new Circle();
     b.colour = "rgb(0, 0, 255)";
 
-    c = new Circle()
+    c = new Circle();
     c.colour = "rgb(0, 255, 0)";
 
-    d = new Circle()
+    d = new Circle();
     d.colour = "rgb(255, 0, 0)";
 
-    e = new Circle()
+    e = new Circle();
     e.colour = "rgb(0, 255, 255)";
 
-    f = new Circle()
+    f = new Circle();
     f.colour = "rgb(255, 255, 0)";
 
-    g = new Circle()
+    g = new Circle();
     g.colour = "rgb(255, 0, 255)";
 
     ctx.beginPath();
