@@ -80,6 +80,14 @@ Circle.prototype.render = function(parent) {
         ctx.stroke();
     }
 
+    if (degree > 2) {
+        ctx.beginPath();
+        ctx.moveTo(parent.coordinates[0] + WIDTH/2, parent.coordinates[1] + HEIGHT/2);
+        ctx.lineTo(this.coordinates[0] + WIDTH/2, this.coordinates[1] + HEIGHT/2);
+        ctx.strokeStyle = this.colour;
+        ctx.stroke();
+    }
+
     this.coordinates = [x + parent.coordinates[0], y + parent.coordinates[1]];
 }
 
