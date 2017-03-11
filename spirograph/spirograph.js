@@ -9,7 +9,15 @@ function randint(min, max) {
     return Math.floor(min + Math.random() * (max - min + 1));
 }
 
+function keyDown(event){
+    restart();
+}
+
 function click(event) {
+    restart();
+}
+
+function restart() {
     frame = 0;
     degree = 0;
 
@@ -139,3 +147,4 @@ function init() {
 
 window.onLoad = init();
 window.addEventListener('click', click, true);
+window.addEventListener('keydown', keyDown, true);
