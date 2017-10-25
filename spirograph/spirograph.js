@@ -25,6 +25,7 @@ function restart() {
     a.orbitradius = randint(HEIGHT/6, HEIGHT/3);
     a.orbittime = randint(100, 500);
     a.colour = "rgb(100, 100, 100)";
+    a.draw = true;
 
     b = new Circle();
     b.colour = "rgb(0, 0, 255)";
@@ -60,32 +61,37 @@ function Circle() {
     }
     this.colour;
     this.coordinates = [0, 0];
+    this.draw = false;
 }
 
 Circle.prototype.render = function(parent) {
     x = Math.cos(degree * 2 * Math.PI / this.orbittime) * this.orbitradius;
     y = Math.sin(degree * 2 * Math.PI / this.orbittime) * this.orbitradius;
 
-    if (!parent) {
-        parent = new Circle();
-        parent.coordinates[0] = 0;
-        parent.coordinates[1] = 0;
-    }
+    if (this.draw) {
+        if (!parent) {
+            parent = new Circle();
+            parent.coordinates[0] = 0;
+            parent.coordinates[1] = 0;
+        }
 
-    if (degree > 2) {
-        ctx.beginPath();
-        ctx.moveTo(x + parent.coordinates[0] + WIDTH/2, y + parent.coordinates[1] + HEIGHT/2);
-        ctx.lineTo(this.coordinates[0] + WIDTH/2, this.coordinates[1] + HEIGHT/2);
-        ctx.strokeStyle = this.colour;
-        ctx.stroke();
-    }
+        if (degree > 2) {
+            ctx.beginPath();
+            ctx.moveTo(x + parent.coordinates[0] + WIDTH/2, y + parent.coordinates[1] + HEIGHT/2);
+            ctx.lineTo(this.coordinates[0] + WIDTH/2, this.coordinates[1] + HEIGHT/2);
+            ctx.strokeStyle = this.colour;
+            ctx.stroke();
+        }
 
-    if (degree > 2) {
-        ctx.beginPath();
-        ctx.moveTo(parent.coordinates[0] + WIDTH/2, parent.coordinates[1] + HEIGHT/2);
-        ctx.lineTo(this.coordinates[0] + WIDTH/2, this.coordinates[1] + HEIGHT/2);
-        ctx.strokeStyle = this.colour;
-        ctx.stroke();
+        // if (degree > 2) {
+        //     if (parent.coordinates[0] != 0 && parent.coordinates[1] != 0) {
+        //         ctx.beginPath();
+        //         ctx.moveTo(parent.coordinates[0] + WIDTH/2, parent.coordinates[1] + HEIGHT/2);
+        //         ctx.lineTo(this.coordinates[0] + WIDTH/2, this.coordinates[1] + HEIGHT/2);
+        //         ctx.strokeStyle = this.colour;
+        //         ctx.stroke();
+        //     }
+        // }
     }
 
     this.coordinates = [x + parent.coordinates[0], y + parent.coordinates[1]];
@@ -93,6 +99,32 @@ Circle.prototype.render = function(parent) {
 
 function frame() {
     degree += 1;
+
+    if (!g.draw) {
+        if (degree % a.orbittime == 0) {
+            if (b.draw) {
+                if (c.draw) {
+                    if (d.draw) {
+                        if (e.draw) {
+                            if (f.draw) {
+                                g.draw = true;
+                            } else {
+                                f.draw = true;
+                            }
+                        } else {
+                            e.draw = true;
+                        }
+                    } else {
+                        d.draw = true;
+                    }
+                } else {
+                    c.draw = true;
+                }
+            } else {
+                b.draw = true;
+            }
+        }
+    }
 
     a.render();
     b.render(a);
@@ -102,10 +134,10 @@ function frame() {
     f.render(e);
     g.render(f);
 
-    ctx.fillStyle = "rgb(255, 255, 255)";
-    ctx.beginPath();
-    ctx.arc(WIDTH/2, HEIGHT/2, 5, 0, Math.PI*2, true);
-    ctx.fill();
+    // ctx.fillStyle = "rgb(255, 255, 255)";
+    // ctx.beginPath();
+    // ctx.arc(WIDTH/2, HEIGHT/2, 5, 0, Math.PI*2, true);
+    // ctx.fill();
 
     ctx.beginPath();
     ctx.rect(0, 0, WIDTH, HEIGHT);

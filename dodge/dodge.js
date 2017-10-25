@@ -114,9 +114,11 @@ function init() {
     colour.r2 = [randint(colour.min+1, colour.max-1), [-1, 1][randint(0, 1)]];
     colour.g2 = [randint(colour.min+1, colour.max-1), [-1, 1][randint(0, 1)]];
     colour.b2 = [randint(colour.min+1, colour.max-1), [-1, 1][randint(0, 1)]];
-    colour.foreground = "rgb("+(255-(colour.r1[0]+colour.r2[0])/2)+", "+
-                                (255-(colour.g1[0]+colour.g2[0])/2)+", "+
-                                (255-(colour.b1[0]+colour.b2[0])/2)+")";
+    // Foreground colour changed to black
+    // colour.foreground = "rgb("+(255-(colour.r1[0]+colour.r2[0])/2)+", "+
+    //                             (255-(colour.g1[0]+colour.g2[0])/2)+", "+
+    //                             (255-(colour.b1[0]+colour.b2[0])/2)+")";
+    colour.foreground = "rgb(0, 0, 0)";
     colour.speedUp = "rgb(40, 230, 40)";
     colour.speedDown = "rgb(230, 40, 40)";
     colour.reverser = "rgb(230, 40, 230)";
