@@ -4,11 +4,11 @@ html {
 }
 
 body {
+    /*background-image: url("../images/90.jpg");*/
+    background-color: #004020;
     height: 100%;
     overflow: auto;
-    background-repeat:no-repeat;
     background-size: 100% 1080px;
-    background-color: #004621;
     font-family: "Trebuchet MS";
 }
 
