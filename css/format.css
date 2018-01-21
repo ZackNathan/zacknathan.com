@@ -8,28 +8,15 @@ body {
     overflow: auto;
     background-repeat:no-repeat;
     background-size: 100% 1080px;
-    background-color: #310066;
-}
-
-#bar {
-    color: white;
-    border: none;
-    background-color: #260d49;
-    border-radius: 0px;
-    margin-bottom: 0px;
-}
-
-#bar a {
-    color: white;
+    background-color: #004621;
+    font-family: "Trebuchet MS";
 }
 
 h1 {
     font-size: 30pt;
-    font-variant: small-caps;
 }
 
 p {
     font-size: 12pt;
-    font-family: "Droid Sans";
     line-height: 26px;
 }
