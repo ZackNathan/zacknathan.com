@@ -1,2 +1,2 @@
-# zacknathan.com
-zacknathan.com
+# zacknathan.me
+zacknathan.me
