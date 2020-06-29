@@ -196,8 +196,10 @@
                 // Change background color
                 if (darkMode) {
                     textElement.style.backgroundColor = darkColor;
+                    $('body').css("background-color", darkColor);
                 } else {
                     textElement.style.backgroundColor = lightColor;
+                    $('body').css("background-color", lightColor);
                 }
                 updateDescription();
                 // Make text very small
