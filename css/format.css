@@ -42,3 +42,7 @@ table tr td {
 .noHover:hover {
     text-decoration: none;
 }
+
+.underline {
+    text-decoration: underline;
+}

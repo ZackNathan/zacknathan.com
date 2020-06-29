@@ -164,10 +164,14 @@
 
             // Zoom into the anchor in the clicked span
             async function zoomIn(span) {
+                if (span.id == descriptionState) {
+                    return;
+                }
                 // Update description state
                 descriptionState = span.id;
                 // Disable hover underline
                 $('span.heading').addClass('noHover');
+                $('span.heading').removeClass('underline');
                 // Scroll to center anchor
                 const anchor = span.firstElementChild;
                 anchor.scrollIntoView({behavior: "smooth", block: "center", inline: "center"});
@@ -228,6 +232,7 @@
                 textElement.firstElementChild.style.transform = `scale(1)`;
                 // Enable hover underline
                 $('span.heading').removeClass('noHover');
+                $(`#${descriptionState}`).addClass('underline');
             }
 
             // Add click listeners to headings
