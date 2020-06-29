@@ -1,22 +1,44 @@
 html {
     overflow: hidden;
     height: 100%;
+    display: grid;
 }
 
 body {
-    /*background-image: url("../images/90.jpg");*/
-    background-color: #004020;
     height: 100%;
-    overflow: auto;
+    overflow: hidden;
     background-size: 100% 1080px;
-    font-family: "Trebuchet MS";
+    font-family: "Georgia";
+    white-space: nowrap;
+    display: grid;
 }
 
-h1 {
-    font-size: 30pt;
+table tr {
+    display: table-row;
 }
 
-p {
-    font-size: 12pt;
-    line-height: 26px;
+table tr td {
+    position: relative;
+    /* border: 1px solid black; */
+}
+
+.heading {
+    font-size: 200%;
+    font-weight: bold;
+}
+
+.anchor {
+    width: 1px;
+    height: 1px;
+    background-color: red;
+    opacity: 0;
+    position: absolute;
+}
+
+.heading:hover {
+    text-decoration: underline;
+}
+
+.noHover:hover {
+    text-decoration: none;
 }
