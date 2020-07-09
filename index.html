@@ -176,11 +176,13 @@
                 anchor.scrollIntoView({behavior: "smooth", block: "center", inline: "center"});
                 await new Promise(r => setTimeout(r, 200));
 
+                // Milliseconds between zoom steps
+                var zoomSleep = 5;
                 // Zoom into the anchor
                 var i;
                 for (i = 0; i < 113; i++) {
-                    // Sleep for 4 millis
-                    await new Promise(r => setTimeout(r, 4));
+                    // Sleep for a few millis
+                    await new Promise(r => setTimeout(r, zoomSleep));
                     zoom += 0.02;
                     // Increase font size and scale
                     const size = Math.floor(Math.pow(FONT_SIZE, zoom));
@@ -214,8 +216,8 @@
                 // Zoom into text
                 var i;
                 for (i = 0; i < 50; i++) {
-                    // Sleep for 4 millis
-                    await new Promise(r => setTimeout(r, 4));
+                    // Sleep for a few millis
+                    await new Promise(r => setTimeout(r, zoomSleep));
                     zoom += 0.02;
                     // Increase font size and scale
                     const size = Math.pow(FONT_SIZE, zoom);
